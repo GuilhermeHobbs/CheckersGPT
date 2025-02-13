@@ -6,7 +6,7 @@ app = Flask(__name__)
 # Enable CORS with more explicit configuration
 CORS(app, resources={
     r"/*": {
-        "origins": "*",  # In production, replace with your GitHub Pages domain
+        "origins": "https://checkersgpt-production.up.railway.app/",  # In production, replace with your GitHub Pages domain
         "methods": ["POST", "OPTIONS"],
         "allow_headers": ["Content-Type"]
     }
