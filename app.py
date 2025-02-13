@@ -11,7 +11,7 @@ def ask_name():
     # Handle preflight OPTIONS request
     if request.method == 'OPTIONS':
         response = make_response()
-        response.headers.add("Access-Control-Allow-Origin", "*")
+        response.headers.add("Access-Control-Allow-Origin", "https://railway.app")
         response.headers.add("Access-Control-Allow-Headers", "Content-Type")
         response.headers.add("Access-Control-Allow-Methods", "POST")
         return response
@@ -24,13 +24,13 @@ def ask_name():
         response = make_response(jsonify({'response': "Invalid request"}), 400)
         
     # Add CORS headers to the actual response
-    response.headers.add("Access-Control-Allow-Origin", "*")
+    response.headers.add("Access-Control-Allow-Origin", "https://railway.app")
     return response
 
 # Global after_request handler
 @app.after_request
 def add_cors_headers(response):
-    response.headers.add("Access-Control-Allow-Origin", "*")
+    response.headers.add("Access-Control-Allow-Origin", "https://railway.app")
     response.headers.add("Access-Control-Allow-Headers", "Content-Type")
     response.headers.add("Access-Control-Allow-Methods", "POST")
     return response
