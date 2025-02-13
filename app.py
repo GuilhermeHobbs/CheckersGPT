@@ -1,20 +1,35 @@
 from flask import Flask, request, jsonify, make_response
-from flask_cors import CORS, cross_origin
+from flask_cors import CORS
 
 app = Flask(__name__)
 
-# Basic CORS setup
-CORS(app, support_credentials=True)
+# List of allowed origins
+ALLOWED_ORIGINS = [
+    'https://guilhermehobbs.github.io/',  # Replace with your GitHub Pages domain
+    'http://localhost:5000',  # For local testing
+    'http://127.0.0.1:5000'   # For local testing
+]
+
+# Configure CORS with specific origins
+CORS(app, resources={
+    r"/ask-name": {
+        "origins": ALLOWED_ORIGINS,
+        "methods": ["POST", "OPTIONS"],
+        "allow_headers": ["Content-Type"]
+    }
+})
 
 @app.route('/ask-name', methods=['POST', 'OPTIONS'])
-@cross_origin(supports_credentials=True)
 def ask_name():
+    origin = request.headers.get('Origin')
+    
     # Handle preflight OPTIONS request
     if request.method == 'OPTIONS':
         response = make_response()
-        response.headers.add("Access-Control-Allow-Origin", "https://railway.app")
-        response.headers.add("Access-Control-Allow-Headers", "Content-Type")
-        response.headers.add("Access-Control-Allow-Methods", "POST")
+        if origin in ALLOWED_ORIGINS:
+            response.headers.add('Access-Control-Allow-Origin', origin)
+            response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
+            response.headers.add('Access-Control-Allow-Methods', 'POST')
         return response
 
     data = request.get_json()
@@ -23,18 +38,11 @@ def ask_name():
         response = make_response(jsonify({'response': "It's me"}))
     else:
         response = make_response(jsonify({'response': "Invalid request"}), 400)
-        
+    
     # Add CORS headers to the actual response
-    response.headers.add("Access-Control-Allow-Origin", "https://railway.app")
-    return response
-
-# Global after_request handler
-@app.after_request
-@cross_origin(supports_credentials=True)
-def add_cors_headers(response):
-    response.headers.add("Access-Control-Allow-Origin", "https://railway.app")
-    response.headers.add("Access-Control-Allow-Headers", "Content-Type")
-    response.headers.add("Access-Control-Allow-Methods", "POST")
+    if origin in ALLOWED_ORIGINS:
+        response.headers.add('Access-Control-Allow-Origin', origin)
+    
     return response
 
 if __name__ == '__main__':
