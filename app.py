@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify, make_response
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
 
@@ -20,6 +20,7 @@ CORS(app, resources={
 })
 
 @app.route('/ask-name', methods=['POST', 'OPTIONS'])
+@cross_origin(supports_credentials=True)
 def ask_name():
     origin = request.headers.get('Origin')
     
