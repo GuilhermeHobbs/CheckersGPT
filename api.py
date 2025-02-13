@@ -1,17 +1,20 @@
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
+from flask import Flask, jsonify
+from flask_cors import CORS
+import os
 
-app = FastAPI()
+app = Flask(__name__)
+# Enable CORS for all routes
+CORS(app)
 
-# Allow CORS for GitHub Pages
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],  # Set your GitHub Pages URL for better security
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+@app.route('/api/data', methods=['GET'])
+def get_data():
+    return jsonify({
+        'message': 'Hello from Railway!',
+        'data': [1, 2, 3, 4, 5]
+    })
 
-@app.get("/api/message")
-def get_message():
-    return {"message": "Heeeeeeeeeello from Railway API!"}
+if __name__ == '__main__':
+    # Get port from environment variable (Railway sets this automatically)
+    port = int(os.environ.get('PORT', 5000))
+    # Run the app
+    app.run(host='0.0.0.0', port=port)
