@@ -30,6 +30,7 @@ def ask_name():
 
 # Global after_request handler
 @app.after_request
+@cross_origin(supports_credentials=True)
 def add_cors_headers(response):
     response.headers.add("Access-Control-Allow-Origin", "https://railway.app")
     response.headers.add("Access-Control-Allow-Headers", "Content-Type")
