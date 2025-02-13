@@ -1,20 +1,20 @@
-from flask import Flask, jsonify
+from flask import Flask, request
 from flask_cors import CORS
-import os
 
 app = Flask(__name__)
-# Enable CORS for all routes
+# Enable CORS for all domains (you can restrict this to your GitHub Pages domain in production)
 CORS(app)
 
-@app.route('/app/data', methods=['GET'])
-def get_data():
-    return jsonify({
-        'message': 'Hello from Railway!',
-        'data': [1, 2, 3, 4, 5]
-    })
+@app.route('/ask-name')
+def ask_name():
+    # Get the question parameter from the URL
+    question = request.args.get('question', '')
+    
+    # Check if the received question is correct
+    if question == "The Name?":
+        return {"answer": "It's me"}
+    else:
+        return {"answer": "Invalid question"}
 
 if __name__ == '__main__':
-    # Get port from environment variable (Railway sets this automatically)
-    port = int(os.environ.get('PORT', 5000))
-    # Run the app
-    app.run(host='0.0.0.0', port=port)
+    app.run(host='0.0.0.0', port=5000)
