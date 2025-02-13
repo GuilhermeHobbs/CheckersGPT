@@ -3,8 +3,8 @@ from pydantic import BaseModel
 import torch
 
 # Load your model
-model = torch.load("your_model.pth")
-model.eval()
+#model = torch.load("your_model.pth")
+#model.eval()
 
 app = FastAPI()
 
@@ -12,7 +12,7 @@ app = FastAPI()
 class InputData(BaseModel):
     prompt: str
 
-@app.post("/generate")
+@app.post("/")
 def generate_text(data: InputData):
     prompt = data.prompt
     # Your model's inference logic here
