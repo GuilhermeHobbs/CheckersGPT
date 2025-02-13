@@ -9,7 +9,9 @@ def ask_name():
     data = request.get_json()
     
     if data and data.get('message') == "Name?":
-        return jsonify({'response': "It's me"})
+         response = flask.jsonify({'response': "It's me"})
+         response.headers.add('Access-Control-Allow-Origin', '*')
+         return response
     
     return jsonify({'response': "Invalid request"}), 400
 
