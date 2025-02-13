@@ -1,12 +1,17 @@
-from flask import Flask, jsonify
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app)  # Enables CORS so GitHub Pages can access this API
+CORS(app)  # Enable CORS for all routes
 
-@app.route('/ask', methods=['GET'])
-def ask():
-    return jsonify({"answer": "It's me"})
+@app.route('/ask-name', methods=['POST'])
+def ask_name():
+    data = request.get_json()
+    
+    if data and data.get('message') == "Name?":
+        return jsonify({'response': "It's me"})
+    
+    return jsonify({'response': "Invalid request"}), 400
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
