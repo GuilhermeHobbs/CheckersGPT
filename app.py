@@ -2,8 +2,18 @@ from flask import Flask, request
 from flask_cors import CORS
 
 app = Flask(__name__)
-# Enable CORS for all domains (you can restrict this to your GitHub Pages domain in production)
-CORS(app)
+
+# Configure CORS with specific origins
+CORS(app, resources={
+    r"/ask-name": {
+        "origins": [
+            "https://guilhermehobbs.github.io",
+            "http://localhost:5000"  # For local testing
+        ],
+        "methods": ["GET"],
+        "allow_headers": ["Content-Type"]
+    }
+})
 
 @app.route('/ask-name')
 def ask_name():
