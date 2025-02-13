@@ -6,7 +6,7 @@ app = Flask(__name__)
 # Enable CORS for all routes
 CORS(app)
 
-@app.route('/api/data', methods=['GET'])
+@app.route('/app/data', methods=['GET'])
 def get_data():
     return jsonify({
         'message': 'Hello from Railway!',
